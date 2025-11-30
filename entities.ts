@@ -12,23 +12,21 @@ export interface User {
     ticket: Ticket[]
   }
   
-  export interface Location {
-    id: number;
-    name: string;
-  }
-  
+
   export interface Route {
-    id: string;
-    origin: Location;
-    destination: Location;
-    basePrice: number; 
-    estimatedDuration: number;
+    routeId: string
+    routeBasePrice: number;
+    routeEstimateDuration: number
+    origin: Locations
+    destination: Locations
+    trip: Trip[]
   }
   
   export interface Bus {
-    id: string;
-    plateNumber: string;
-    capacity: number;
+    busId: string
+    busPlateNumber: string
+    busCapacity: number
+    trip:Trip[]
   }
   
   export interface Trip {
