@@ -4,6 +4,7 @@ import NextLink from 'next/link';
 import { Input, Button, Card, CardHeader, CardBody, Link } from "@heroui/react";
 import { useAuth } from '@/app/context/auth-context';
 import { Mail, Lock, BusFront } from 'lucide-react';
+import { API_URL } from '@/constants';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -18,7 +19,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+      const res = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
