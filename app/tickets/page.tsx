@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardBody, CardHeader, Divider, Button, Spinner } from "@heroui/react";
-import { TicketCheck } from "lucide-react"; // Si instalaste lucide
+import { TicketCheck } from "lucide-react";
 import { API_URL } from "@/constants";
 import { BusFront } from "lucide-react";
 
