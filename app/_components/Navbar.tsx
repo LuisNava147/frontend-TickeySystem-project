@@ -25,7 +25,7 @@ export const AppNavbar = ()=>{
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                     <Link color="foreground" href="#"  
+                     <Link color="foreground" href="/tickets"  
                     className="text-gray-300 hover:text-white transition">
                         Mis boletos
                      </Link>   
