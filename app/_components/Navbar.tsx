@@ -17,6 +17,9 @@ import NextLink from "next/link";
 
 export const AppNavbar = () => {
   const { user, logout } = useAuth();
+  const isUserAdmin = user?.roles?.includes('Admin');
+  const ticketsLink = isUserAdmin ? "/admin/tickets" : "/tickets";
+  const ticketsLabel = isUserAdmin ? "Panel de Tickets" : "Mis Boletos";
 
   return (
     <Navbar shouldHideOnScroll className="bg-black/80 text-white backdrop-blur-md border-b border-white/5">
@@ -34,12 +37,13 @@ export const AppNavbar = () => {
         </NavbarItem>
         {user && (
           <NavbarItem>
-            <Link as={NextLink} color="foreground" href="/tickets" className="text-zinc-300 hover:text-white transition font-medium">
-              Mis Boletos
+           <Link as={NextLink} color="foreground" href={ticketsLink} className="text-zinc-300 hover:text-white transition font-medium">
+              {ticketsLabel}
             </Link>
           </NavbarItem>
         )}
       </NavbarContent>
+      
       
       <NavbarContent justify="end">
         {user ? (
@@ -56,7 +60,7 @@ export const AppNavbar = () => {
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="info" className="h-14 gap-2" textValue="Info">
+            <DropdownItem key="tickets" href={ticketsLink}>{ticketsLabel}
                 <p className="font-semibold">Conectado como</p>
                 <p className="font-semibold text-primary">{user.userEmail}</p>
               </DropdownItem>
