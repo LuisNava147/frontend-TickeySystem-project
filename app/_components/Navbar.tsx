@@ -20,13 +20,27 @@ export const AppNavbar = ()=>{
     const [user, setUser] = useState<any>(null);
     const router = useRouter();
 
- 
-  useEffect(() => {
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      setUser(JSON.parse(userStr));
-    }
-  }, []);
+    const loadUser = () => {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+          try {
+            setUser(JSON.parse(userStr));
+          } catch (error) {
+            console.error("Error al leer usuario del storage", error);
+            setUser(null);
+          }
+        } else {
+          setUser(null);
+        }
+      };
+    
+      useEffect(() => {
+        loadUser();
+        window.addEventListener('userUpdated', loadUser);
+        return () => {
+          window.removeEventListener('userUpdated', loadUser);
+        };
+      }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -66,7 +80,7 @@ export const AppNavbar = ()=>{
           as="button"
           className="transition-transform"
           color="primary"
-          name={user.fullName ? user.identityDocumentUrl : "U"}
+          name={user.identityDocumentUrl}
           size="sm"
           src={user.identityDocumentUrl}
         />
@@ -76,6 +90,7 @@ export const AppNavbar = ()=>{
           <p className="font-semibold">Conectado como</p>
           <p className="font-semibold text-blue-400">{user.email}</p>
         </DropdownItem>
+        <DropdownItem key="profile" href="/profile">Mi Perfil</DropdownItem>
         <DropdownItem key="tickets" href="/tickets">Mis Boletos</DropdownItem>
         <DropdownItem key="logout" color="danger" onPress={handleLogout}>
           Cerrar Sesión

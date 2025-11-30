@@ -46,7 +46,7 @@ export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
         throw new Error(error.message);
       }
 
-      alert("¡Compra exitosa! 🎉 Revisa 'Mis Boletos'");
+      alert("¡Compra exitosa!  Revisa 'Mis Boletos'");
       
     } catch (error: any) {
       alert("Error: " + error.message);
