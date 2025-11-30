@@ -1,7 +1,7 @@
 'use client'
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { User } from '@/entities'; 
+import { User } from '@/entities';
 
 interface AuthContextType {
   user: User | null;
@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (storedToken && storedUser) {
       setToken(storedToken);
-      setUser(JSON.parse(storedUser)); 
+      setUser(JSON.parse(storedUser));
     }
     setIsLoading(false);
   }, []);
@@ -36,7 +36,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('user', JSON.stringify(newUser));
     setToken(newToken);
     setUser(newUser);
-    
     router.push('/');
   };
 
@@ -50,7 +49,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateUser = (newUserData: User) => {
     const updatedUser = { ...user, ...newUserData } as User;
-    
     localStorage.setItem('user', JSON.stringify(updatedUser));
     setUser(updatedUser);
   };
