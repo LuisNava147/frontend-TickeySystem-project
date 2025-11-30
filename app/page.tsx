@@ -14,7 +14,7 @@ const formatDate = (dateString: Date | string) => {
 
 async function getTrips() {
   try {
-    // Usamos timestamp para romper caché a la fuerza
+
     const res = await fetch(`${API_URL}/trips?t=${new Date().getTime()}`, {
       cache: 'no-store', 
     });
@@ -52,10 +52,8 @@ export default async function Home() {
           {trips.map((trip: any) => (
             <Card 
               key={trip.tripId} 
-              // 👇 CAMBIO VISUAL: min-h-[350px] fuerza el tamaño, flex-col acomoda todo verticalmente
               className="bg-zinc-900 border border-zinc-800 text-white hover:border-primary/50 transition-all shadow-lg flex flex-col min-h-[350px]"
             >
-              {/* PARTE SUPERIOR (Crece lo necesario) */}
               <div className="flex-grow">
                 <CardHeader className="flex flex-col items-start px-6 pt-6 pb-0">
                   <div className="flex justify-between w-full items-center mb-4">
@@ -97,8 +95,6 @@ export default async function Home() {
                   </div>
                 </CardBody>
               </div>
-
-              {/* PARTE INFERIOR (Siempre pegada al fondo gracias a flex-grow arriba) */}
               <div className="mt-auto">
                  <Divider className="bg-zinc-800" />
                  <div className="p-6">
