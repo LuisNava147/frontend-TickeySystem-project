@@ -48,7 +48,7 @@ export default function SignupPage() {
   };
 
   return (
-    <Card className="w-full bg-surface border border-white/10 shadow-2xl">
+    <Card className="w-full max-w-[400px] bg-zinc-900/90 border border-white/10 shadow-2xl backdrop-blur-md">
       <CardHeader className="flex flex-col gap-2 text-center pt-8 pb-4">
         <div className="mx-auto bg-primary/20 p-3 rounded-full text-primary mb-2">
           <UserPlus size={32} />
