@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('user');
     setToken(null);
     setUser(null);
-    router.push('/auth/login');
+    router.push('/login');
   };
 
   const updateUser = (newUserData: User) => {

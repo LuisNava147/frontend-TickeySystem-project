@@ -21,7 +21,7 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_URL}/auth/register`, {
+      const res = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -38,7 +38,7 @@ export default function SignupPage() {
       }
 
       alert("¡Cuenta creada con éxito! Ahora inicia sesión.");
-      router.push('/auth/login'); 
+      router.push('/login'); 
 
     } catch (err: any) {
       setError(err.message);
@@ -125,7 +125,7 @@ export default function SignupPage() {
 
           <div className="text-center text-sm text-zinc-500 mt-2">
             ¿Ya tienes cuenta?{' '}
-            <Link as={NextLink} href="/auth/login" className="text-primary hover:text-primary/80 transition-colors font-semibold cursor-pointer">
+            <Link as={NextLink} href="/login" className="text-primary hover:text-primary/80 transition-colors font-semibold cursor-pointer">
               Inicia sesión
             </Link>
           </div>

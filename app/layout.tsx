@@ -1,31 +1,31 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { Providers } from './providers/providers'
-import { AppNavbar } from './_components/Navbar'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Providers } from "./providers"; 
+import { AppNavbar } from "./_components/Navbar";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Chihuahuenos S. A. de C. V. ',
-  description: 'Reserva tu boleto de autobús',
-}
+  title: "Chihuahueños S.A. de C.V.",
+  description: "Reserva de boletos de autobús",
+};
 
 export default function RootLayout({
   children,
-}: Readonly< {
-  children: React.ReactNode
+}: Readonly<{
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className='dark'>
+    <html lang="es" className='dark'>
       <body className={inter.className}>
         <Providers>
           <AppNavbar />
-          <main className='min-h-screen'>
+          <main className="min-h-screen">
             {children}
           </main>
         </Providers>
-        </body>
+      </body>
     </html>
-  )
+  );
 }

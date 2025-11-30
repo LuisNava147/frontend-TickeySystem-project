@@ -1,117 +1,88 @@
 'use client'
 import {
-    Navbar, 
-    NavbarBrand, 
-    NavbarContent, 
-    NavbarItem, 
-    Link, 
-    Button,
-    Avatar,
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    DropdownItem
-  } from "@heroui/react";
-  import { BusFront } from "lucide-react";
-  import { useEffect, useState } from "react";
-  import { useRouter } from "next/navigation";
+  Navbar, 
+  NavbarBrand, 
+  NavbarContent, 
+  NavbarItem, 
+  Link, 
+  Button, 
+  Avatar,
+  Dropdown, 
+  DropdownTrigger, 
+  DropdownMenu, 
+  DropdownItem
+} from "@heroui/react";
+import { useAuth } from "../context/auth-context";
+import NextLink from "next/link"; 
 
-export const AppNavbar = ()=>{
-    const [user, setUser] = useState<any>(null);
-    const router = useRouter();
+export const AppNavbar = () => {
+  const { user, logout } = useAuth();
 
-    const loadUser = () => {
-        const userStr = localStorage.getItem('user');
-        if (userStr) {
-          try {
-            setUser(JSON.parse(userStr));
-          } catch (error) {
-            console.error("Error al leer usuario del storage", error);
-            setUser(null);
-          }
-        } else {
-          setUser(null);
-        }
-      };
-    
-      useEffect(() => {
-        loadUser();
-        window.addEventListener('userUpdated', loadUser);
-        return () => {
-          window.removeEventListener('userUpdated', loadUser);
-        };
-      }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setUser(null);
-    router.push('/auth/login');
-    router.refresh();
-  };
-    return(
-        <Navbar shouldHideOnScroll className="bg-black/80 text-white backdrop-blur-md">
-            <NavbarBrand>
-                <BusFront className="mr-2 text-blue-500" />
-                <p className="font-bold text-inherit tracking-wider">CHIHUAHUEÑOS</p>
-            </NavbarBrand>
-
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <NavbarItem isActive>
-                    <Link color="foreground" href="/" aria-current="page" 
-                    className="text-blue-400 font-semibold">
-                        Viajes
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                     <Link color="foreground" href="/tickets"  
-                    className="text-gray-300 hover:text-white transition">
-                        Mis boletos
-                     </Link>   
-                </NavbarItem>
-            </NavbarContent>
-
-            <NavbarContent justify="end">{
-            user ? (
-    <Dropdown placement="bottom-end" className="bg-zinc-900 border border-zinc-800 text-white">
-      <DropdownTrigger>
-        <Avatar
-          isBordered
-          as="button"
-          className="transition-transform"
-          color="primary"
-          name={user.identityDocumentUrl}
-          size="sm"
-          src={user.identityDocumentUrl}
-        />
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem key="profile" className="h-14 gap-2">
-          <p className="font-semibold">Conectado como</p>
-          <p className="font-semibold text-blue-400">{user.email}</p>
-        </DropdownItem>
-        <DropdownItem key="profile" href="/profile">Mi Perfil</DropdownItem>
-        <DropdownItem key="tickets" href="/tickets">Mis Boletos</DropdownItem>
-        <DropdownItem key="logout" color="danger" onPress={handleLogout}>
-          Cerrar Sesión
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  ) : (
-    <>
-      <NavbarItem className="hidden lg:flex">
-        <Link href="/auth/login" className="text-gray-300 hover:text-white text-sm">
-          Iniciar Sesión
+  return (
+    <Navbar shouldHideOnScroll className="bg-black/80 text-white backdrop-blur-md border-b border-white/5">
+      <NavbarBrand>
+        <Link as={NextLink} href="/" color="foreground">
+          <p className="font-bold text-inherit tracking-wider text-xl">CHIHUAHUEÑOS</p>
         </Link>
-      </NavbarItem>
-      <NavbarItem>
-        <Button as={Link} color="primary" href="/auth/register" variant="flat" className="font-bold">
-          Registrarse
-        </Button>
-      </NavbarItem>
-    </>
-  )}
-</NavbarContent>
-</Navbar>
-);
+      </NavbarBrand>
+      
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarItem>
+          <Link as={NextLink} color="foreground" href="/" className="text-zinc-300 hover:text-white transition font-medium">
+            Viajes
+          </Link>
+        </NavbarItem>
+        {user && (
+          <NavbarItem>
+            <Link as={NextLink} color="foreground" href="/tickets" className="text-zinc-300 hover:text-white transition font-medium">
+              Mis Boletos
+            </Link>
+          </NavbarItem>
+        )}
+      </NavbarContent>
+      
+      <NavbarContent justify="end">
+        {user ? (
+          <Dropdown placement="bottom-end" className="bg-zinc-900 border border-zinc-800 text-white">
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="primary"
+                name={user.userFullName ? user.userFullName.charAt(0).toUpperCase() : "U"}
+                size="sm"
+                src={user.indetifyDocumentUrl} 
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem key="info" className="h-14 gap-2" textValue="Info">
+                <p className="font-semibold">Conectado como</p>
+                <p className="font-semibold text-primary">{user.userEmail}</p>
+              </DropdownItem>
+              <DropdownItem key="profile" href="/profile">Mi Perfil</DropdownItem>
+              <DropdownItem key="tickets" href="/tickets">Mis Boletos</DropdownItem>
+              <DropdownItem key="logout" color="danger" onPress={logout}>
+                Cerrar Sesión
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        ) : (
+          
+          <>
+            <NavbarItem className="hidden lg:flex">
+              <Link as={NextLink} href="/login" className="text-zinc-400 hover:text-white text-sm">
+                Iniciar Sesión
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button as={NextLink} href="/signup" color="primary" variant="shadow" className="font-bold">
+                Registrarse
+              </Button>
+            </NavbarItem>
+          </>
+        )}
+      </NavbarContent>
+    </Navbar>
+  );
 };

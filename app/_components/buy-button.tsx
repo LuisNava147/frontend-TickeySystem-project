@@ -16,7 +16,7 @@ export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
 
     if (!token || !userStr) {
       alert("Por favor inicia sesión para comprar");
-      router.push('/auth/login');
+      router.push('/login');
       return;
     }
 
