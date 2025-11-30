@@ -3,7 +3,7 @@ export interface User {
     userId: string
     userFullName:string
     userEmail:string
-    userPassword: string
+    userPassword?: string
     roles?: string[]
     isActive:boolean
     indetifyDocumentUrl: string
@@ -48,29 +48,12 @@ export interface User {
     user: User;
   }
   
-  export interface Routes {
-    routeId: string
-    routeBasePrice: number;
-    routeEstimateDuration: number
-    origin: Location
-    destination: Location
-    trip: Trip[]
-}
-
 export interface Locations {
     locationId: number
     locationName: string
     departingRoutes: Route[]
     arrivingRoutes: Route[]
 }
-
-export interface Bus {
-    busId: string
-    busPlateNumber: string
-    busCapacity: number
-    trip:Trip[]
-}
-
 
   export interface LoginResponse {
     access_token: string;
