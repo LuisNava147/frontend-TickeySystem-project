@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Input, Button, Card, CardHeader, CardBody, Link } from "@heroui/react";
 import { UserPlus, Mail, Lock, User as UserIcon } from 'lucide-react';
 import { API_URL } from '@/constants';
+import { toast } from "sonner";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -37,8 +38,13 @@ export default function SignupPage() {
         throw new Error(errorData.message || 'Error al registrarse');
       }
 
-      alert("¡Cuenta creada con éxito! Ahora inicia sesión.");
-      router.push('/login'); 
+      toast.success("¡Cuenta creada con éxito!", {
+        description: "Ahora puedes iniciar sesión con tus credenciales."
+      });
+
+      setTimeout(() => {
+        router.push('/login');
+      }, 2500);
 
     } catch (err: any) {
       setError(err.message);

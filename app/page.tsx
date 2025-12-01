@@ -1,7 +1,9 @@
 import { Card, CardBody, CardHeader, Divider } from "@heroui/react";
-import { BuyTicketButton } from "./_components/buy-button";
-import { AdminToolbar } from "./_components/admin-toolbar";
+import { BuyTicketButton } from "./components/buy-button";
+import { AdminToolbar } from "./components/admin-toolbar";
 import { API_URL } from "@/constants";
+import { TripActions } from "./components/trip-action";
+
 const formatDate = (dateString: Date | string) => {
   if (!dateString) return "Fecha pendiente";
   const date = new Date(dateString);
@@ -36,7 +38,7 @@ export default async function Home() {
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
         <div>
           <h1 className="text-4xl font-bold text-white mb-2">
-            Próximos Viajes 🚍
+            Próximos Viajes
           </h1>
           <p className="text-zinc-400">Reserva tu lugar ahora mismo</p>
         </div>
@@ -54,6 +56,7 @@ export default async function Home() {
               key={trip.tripId} 
               className="bg-zinc-900 border border-zinc-800 text-white hover:border-primary/50 transition-all shadow-lg flex flex-col min-h-[350px]"
             >
+              <TripActions trip={trip} />
               <div className="flex-grow">
                 <CardHeader className="flex flex-col items-start px-6 pt-6 pb-0">
                   <div className="flex justify-between w-full items-center mb-4">

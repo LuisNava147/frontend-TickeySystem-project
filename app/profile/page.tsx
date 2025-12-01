@@ -3,8 +3,9 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardBody, CardHeader, Button, Avatar, Divider, Spinner } from "@heroui/react";
 import { Camera, Mail, ShieldAlert, Save } from "lucide-react";
-import { useAuth } from "../context/auth-context";
+import { useAuth } from "../admin/auth-context";
 import { API_URL } from "@/constants";
+import { toast } from "sonner";
 
 export default function ProfilePage() {
   const { user, token, updateUser, isLoading } = useAuth(); // Acceso global
@@ -62,11 +63,16 @@ export default function ProfilePage() {
       
       setSelectedFile(null);
       setPreview(null);
-      alert("¡Foto actualizada con éxito! 📸");
+      toast.success("¡Foto actualizada con éxito!", {
+        description: "Tu nuevo avatar ya es visible en toda la aplicación."
+      });
 
     } catch (error) {
       console.error(error);
-      alert("Hubo un error al subir la imagen.");
+      // 👇 3. ERROR ELEGANTE
+      toast.error("Hubo un error al subir la imagen", {
+        description: "Por favor intenta de nuevo más tarde."
+      });
     } finally {
       setUploading(false);
     }

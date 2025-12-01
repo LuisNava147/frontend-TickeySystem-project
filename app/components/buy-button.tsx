@@ -13,43 +13,41 @@ import {
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TicketCheck } from "lucide-react"; 
+import { toast } from "sonner"; // Usamos Toast en vez de Alert
 import { API_URL } from "@/constants";
-import { toast } from "sonner"; 
 
 export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [seat, setSeat] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
 
+  // 1. Abrir el Modal (Verificando login)
   const handleOpen = () => {
     const token = localStorage.getItem('token');
+    
     if (!token) {
-      // Usamos un toast informativo en lugar de alert
-      toast.info("Inicia sesión para continuar", {
-        description: "Necesitas una cuenta para comprar boletos."
-      });
+      toast.info("Inicia sesión para comprar");
       router.push('/login'); 
       return;
     }
-    setError("");
+    
+    // Limpiamos el estado y abrimos
     setSeat("");
     onOpen();
   };
 
+  // 2. Confirmar Compra (Llamada al API)
   const handleConfirmPurchase = async () => {
     if (!seat) {
-      setError("Por favor escribe un número de asiento");
+      toast.warning("Por favor escribe un número de asiento");
       return;
     }
 
     setLoading(true);
-    setError("");
-
     const token = localStorage.getItem('token');
-    const userStr = localStorage.getItem('user');
-    const user = userStr ? JSON.parse(userStr) : null;
+    // Obtenemos el usuario para sacar su ID
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     try {
       const res = await fetch(`${API_URL}/tickets`, {
@@ -60,6 +58,7 @@ export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
         },
         body: JSON.stringify({
           tripId: tripId,
+          // Usamos tus nombres de variables personalizados
           userId: user?.userId || user?.id, 
           ticketSeatNumber: parseInt(seat)
         })
@@ -70,25 +69,16 @@ export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
         throw new Error(errorData.message || "Error al comprar");
       }
 
-      onClose(); 
-      
-      toast.success("¡Boleto Comprado!", {
-        description: `Asiento #${seat} reservado correctamente.`,
-        duration: 6000,
+      // ÉXITO
+      onClose(); // Cerramos modal
+      toast.success("¡Compra Exitosa! ", {
+        description: `Asiento #${seat} reservado. Revisa 'Mis Boletos'.`
       });
-      
       router.refresh();
 
     } catch (err: any) {
       console.error(err);
-      const message = err.message.includes("JSON") ? "Error de conexión" : err.message;
-      
-  
-      toast.error("No se pudo completar la compra", {
-        description: message
-      });
-      
-      setError(message);
+      toast.error(err.message || "No se pudo completar la compra");
     } finally {
       setLoading(false);
     }
@@ -96,6 +86,7 @@ export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
 
   return (
     <>
+      {/* Botón Visible en la Tarjeta */}
       <Button 
         color="primary" 
         variant="shadow" 
@@ -105,6 +96,7 @@ export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
         Comprar Boleto
       </Button>
 
+      {/* Modal de Selección de Asiento */}
       <Modal 
         isOpen={isOpen} 
         onOpenChange={onOpenChange} 
@@ -139,6 +131,7 @@ export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
                   type="number"
                   value={seat}
                   onValueChange={setSeat}
+                  // Estilos para que no se ponga blanco feo
                   classNames={{
                     input: "text-white text-2xl font-bold text-center",
                     label: "text-zinc-500 hidden",
@@ -152,12 +145,6 @@ export const BuyTicketButton = ({ tripId }: { tripId: string }) => {
                     ].join(" "),
                   }}
                 />
-
-                {error && (
-                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/50 text-red-400 text-sm text-center animate-pulse">
-                    {error}
-                  </div>
-                )}
               </ModalBody>
 
               <ModalFooter>

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import NextLink from 'next/link'; 
 import { Input, Button, Card, CardHeader, CardBody, Link } from "@heroui/react";
-import { useAuth } from '@/app/context/auth-context';
+import { useAuth } from '@/app/admin/auth-context';
 import { Mail, Lock, BusFront } from 'lucide-react';
 import { API_URL } from '@/constants';
 
